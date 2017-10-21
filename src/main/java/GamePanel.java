@@ -16,6 +16,8 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     private Graphics2D graphics2D;
     private Thread thread;
 
+    private int countTime = 0 ,timeSec = 0;
+
     /////////
     private int x;
     private int y;
@@ -39,8 +41,6 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         }
     }
 
-    private int count = 0 ,count1 = 0;
-
     public void run() {
 
         playing = true;
@@ -48,7 +48,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_BGR);
         graphics2D = (Graphics2D) bufferedImage.getGraphics();
 
-        play = new Play(graphics2D);
+        play = new Play(graphics2D, 3, 3); //กำหนดขนาดของตาราง row & col
 
         long startTime;
         long URDTimeMillis;
@@ -69,10 +69,10 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
                 Thread.sleep(waitTime);
             } catch (Exception e) {}
 
-            count++;
-            if (count > 30) {
-                count=0;
-                count1++;
+            countTime++;
+            if (countTime > 30) {
+                countTime=0;
+                timeSec++;
             }
         }
 
@@ -86,8 +86,11 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         graphics2D.setColor(Color.BLACK);
         graphics2D.fillRect(0,0, WIDTH, HEIGHT);
 
+//        graphics2D.setColor(Color.LIGHT_GRAY);
+//        graphics2D.fillRect(75,90, 350, 350);
+
         graphics2D.setColor(Color.GREEN);
-        graphics2D.drawString("Num : "+count1,20,20);
+        graphics2D.drawString("Time : "+timeSec,20,20);
         graphics2D.drawString("X: "+x+", Y: "+y,20,40);
 
         play.draw();
