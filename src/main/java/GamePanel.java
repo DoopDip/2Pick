@@ -48,7 +48,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_BGR);
         graphics2D = (Graphics2D) bufferedImage.getGraphics();
 
-        play = new Play(graphics2D, 3, 3); //กำหนดขนาดของตาราง row & col
+        play = new Play(graphics2D, 10, 10); //กำหนดขนาดของตาราง row & col
 
         long startTime;
         long URDTimeMillis;
@@ -86,15 +86,11 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         graphics2D.setColor(Color.BLACK);
         graphics2D.fillRect(0,0, WIDTH, HEIGHT);
 
-//        graphics2D.setColor(Color.LIGHT_GRAY);
-//        graphics2D.fillRect(75,90, 350, 350);
-
         graphics2D.setColor(Color.GREEN);
         graphics2D.drawString("Time : "+timeSec,20,20);
-        graphics2D.drawString("X: "+x+", Y: "+y,20,40);
+        graphics2D.drawString("X: "+x+", Y: "+y,20,480);
 
         play.draw();
-
     }
 
     public void gameDraw() {
@@ -111,6 +107,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     public void mousePressed(MouseEvent e) {
         x = e.getX();
         y = e.getY();
+        play.pickClick(e.getX(), e.getY());
     }
 
     public void mouseReleased(MouseEvent e) {
