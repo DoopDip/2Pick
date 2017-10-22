@@ -1,4 +1,5 @@
 import java.awt.*;
+import java.util.Random;
 
 public class Play {
 
@@ -17,11 +18,13 @@ public class Play {
     private int col;
 
     private boolean[][] checkClick;
+    private int[][] numBlock;
 
     public Play(Graphics2D graphics2D, int row,int col) {
         this.graphics2D = graphics2D;
         this.row = row;
         this.col = col;
+
         margin = 1; // ขอบระยะห่างของแต่ละ block
         //พิกัดเริ่มต้นที่วาด block
         x = 75;
@@ -36,6 +39,9 @@ public class Play {
         radiusWidth = width/col;
 
         checkClick = new boolean[row][col];
+        numBlock = new int[row][col];
+
+        ranNumBlock();
     }
 
     public void update() {
@@ -55,7 +61,8 @@ public class Play {
                     graphics2D.setColor(Color.ORANGE);
                 graphics2D.fillRect(x, y, radiusWidth, radiusHight);
                 graphics2D.setColor(Color.ORANGE);
-                graphics2D.drawString(i+" ",x+5,y+15);
+                graphics2D.setFont(new Font("Courier New", Font.BOLD, radiusHight/3));
+                graphics2D.drawString(numBlock[i][j]+" ",x+(radiusWidth/2),y+(radiusHight/2));
                 x += radiusWidth+margin;
             }
             y+= radiusHight+margin;
@@ -80,6 +87,49 @@ public class Play {
             }
             y+= radiusHight+margin;
             x = this.x;
+        }
+    }
+
+
+    //  สุ่มช่อง >
+
+    private void ranNumBlock() {
+        int randRow;
+        int randCol;
+        int randNum;
+        boolean check;
+        for (int i=0; i<row*col; i++) {
+            check = true;
+            // random row and col
+            do {
+                randRow = (int)(Math.random()*row);
+                randCol = (int)(Math.random()*col);
+                System.out.println("Random["+randRow+"]["+randCol+"] / ranNum : "+numBlock[randRow][randCol]);
+
+                if (numBlock[randRow][randCol] == 0) {
+                    check = false;
+                }
+
+            } while(check);
+            // random number block
+            do {
+                randNum = 1+(int)(Math.random()*((row*col)/2));
+                System.out.println("randNum : "+randNum);
+                int count = 0;
+                for (int j=0; j<row; j++) {
+                    for (int k=0; k<col; k++) {
+                        if (numBlock[j][k] == randNum) {
+                            count++;
+                        }
+                    }
+                }
+                if (count >= 2) {
+                    check = true;
+                } else {
+                    check = false;
+                }
+            } while (check);
+            numBlock[randRow][randCol] = randNum;
         }
     }
 }

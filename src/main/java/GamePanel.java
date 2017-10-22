@@ -48,7 +48,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_BGR);
         graphics2D = (Graphics2D) bufferedImage.getGraphics();
 
-        play = new Play(graphics2D, 10, 10); //กำหนดขนาดของตาราง row & col
+        play = new Play(graphics2D, 4, 4); //กำหนดขนาดของตาราง row & col
 
         long startTime;
         long URDTimeMillis;
@@ -83,6 +83,7 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     }
 
     public void gameRender() {
+        graphics2D.setFont(new Font("Courier New", Font.PLAIN, 15));
         graphics2D.setColor(Color.BLACK);
         graphics2D.fillRect(0,0, WIDTH, HEIGHT);
 
