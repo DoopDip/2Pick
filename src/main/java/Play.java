@@ -1,5 +1,4 @@
 import java.awt.*;
-import java.util.Random;
 
 public class Play {
 
@@ -98,7 +97,13 @@ public class Play {
         int randCol;
         int randNum;
         boolean check;
-        for (int i=0; i<row*col; i++) {
+        int loop;
+        if ((row*col) % 2 == 0) {
+            loop = row*col;
+        } else {
+            loop = (row*col)-1;
+        }
+        for (int i=0; i<loop; i++) {
             check = true;
             // random row and col
             do {
@@ -114,7 +119,7 @@ public class Play {
             // random number block
             do {
                 randNum = 1+(int)(Math.random()*((row*col)/2));
-                System.out.println("randNum : "+randNum);
+                //System.out.println("randNum : "+randNum);
                 int count = 0;
                 for (int j=0; j<row; j++) {
                     for (int k=0; k<col; k++) {
