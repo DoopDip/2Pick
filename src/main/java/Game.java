@@ -10,3 +10,5 @@ public class Game extends JFrame {
         jFrame.setVisible(true);
     }
 }
+
+// Noob FREN

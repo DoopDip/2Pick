@@ -84,8 +84,7 @@ public class Play {
                 if ((x <= xClick && x+radiusWidth >= xClick) && (y <= yClick && y+radiusHight >= yClick)) {
                     checkClick[i][j] = true;
                     System.out.println("["+(i+1)+"]["+(j+1)+"] = "+checkClick[i][j]);
-                    i = row;
-                    j = col;
+                    return;
                 }
                 x += radiusWidth+margin;
             }
@@ -111,7 +110,7 @@ public class Play {
             do {
                 randRow = (int)(Math.random()*row);
                 randCol = (int)(Math.random()*col);
-                System.out.println("Random["+randRow+"]["+randCol+"] / ranNum : "+numBlock[randRow][randCol]);
+                System.out.println("Random["+randRow+"]["+randCol+"]: "+numBlock[randRow][randCol]);
                 if (numBlock[randRow][randCol] == 0) check = false;
             } while(check);
             // random number block

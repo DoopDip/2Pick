@@ -16,7 +16,8 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     private Graphics2D graphics2D;
     private Thread thread;
 
-    private int countTime = 0 ,timeSec = 0;
+    private int countTime = 0;
+    public static int timeSec = 0;
 
     /////////
     private int x;
