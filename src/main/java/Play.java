@@ -19,6 +19,9 @@ public class Play {
     private boolean[][] checkClick;
     private int[][] numBlock;
 
+    private boolean[] checkClickBlock1;
+    private boolean[] checkClickBlock2;
+
     public Play(Graphics2D graphics2D, int row,int col) {
         this.graphics2D = graphics2D;
         this.row = row;
@@ -37,14 +40,16 @@ public class Play {
         radiusHight = hight/row;
         radiusWidth = width/col;
 
-        checkClick = new boolean[row][col];
-        numBlock = new int[row][col];
+        checkClick = new boolean[row][col]; // เก็บสถานะของ block ; true = แสดง
+        numBlock = new int[row][col]; // เก็บหมายเลขของแต่ละ block
+
+        checkClickBlock1 = new boolean[(row*col)/2];
+        checkClickBlock2 = new boolean[(row*col)/2];
 
         ranNumBlock();
     }
 
     public void update() {
-
 
     }
 
@@ -64,13 +69,13 @@ public class Play {
                 graphics2D.drawString(numBlock[i][j]+" ",x+(radiusWidth/2),y+(radiusHight/2));
                 x += radiusWidth+margin;
             }
-            y+= radiusHight+margin;
+            y += radiusHight+margin;
             x = this.x;
         }
 
     }
 
-
+    // ให้ block แสดงในตำแหน่งที่คลิกโดน block นั้นๆ
     public void pickClick(int xClick, int yClick) {
         int x = this.x;
         int y = this.y;
@@ -84,25 +89,22 @@ public class Play {
                 }
                 x += radiusWidth+margin;
             }
-            y+= radiusHight+margin;
+            y += radiusHight+margin;
             x = this.x;
         }
     }
 
-
-    //  สุ่มช่อง >
-
+    // สุ่มเลขเข้่าไปใน Block โดยหนึ่งเลขจะมี 2 block ที่เหมือนกัน หากมี block เศษเหลือจะให้เป็นเลข 0
     private void ranNumBlock() {
         int randRow;
         int randCol;
         int randNum;
         boolean check;
         int loop;
-        if ((row*col) % 2 == 0) {
+        if ((row*col) % 2 == 0)
             loop = row*col;
-        } else {
+        else
             loop = (row*col)-1;
-        }
         for (int i=0; i<loop; i++) {
             check = true;
             // random row and col
@@ -110,29 +112,22 @@ public class Play {
                 randRow = (int)(Math.random()*row);
                 randCol = (int)(Math.random()*col);
                 System.out.println("Random["+randRow+"]["+randCol+"] / ranNum : "+numBlock[randRow][randCol]);
-
-                if (numBlock[randRow][randCol] == 0) {
-                    check = false;
-                }
-
+                if (numBlock[randRow][randCol] == 0) check = false;
             } while(check);
             // random number block
             do {
                 randNum = 1+(int)(Math.random()*((row*col)/2));
-                //System.out.println("randNum : "+randNum);
+                System.out.println("randNum : "+randNum);
                 int count = 0;
                 for (int j=0; j<row; j++) {
                     for (int k=0; k<col; k++) {
-                        if (numBlock[j][k] == randNum) {
-                            count++;
-                        }
+                        if (numBlock[j][k] == randNum) count++;
                     }
                 }
-                if (count >= 2) {
+                if (count >= 2)
                     check = true;
-                } else {
+                else
                     check = false;
-                }
             } while (check);
             numBlock[randRow][randCol] = randNum;
         }
