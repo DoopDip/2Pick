@@ -3,7 +3,7 @@ import javax.swing.*;
 public class Game extends JFrame {
 
     public static void main(String[] args) {
-        JFrame jFrame = new JFrame("2Pick");
+        JFrame jFrame = new JFrame("NOOB FREN");
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.setContentPane(new GamePanel());
         jFrame.pack();
