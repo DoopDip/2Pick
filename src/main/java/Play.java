@@ -16,7 +16,7 @@ public class Play {
     private int row;
     private int col;
 
-    private boolean[][] checkClick;
+    private int[][] checkClick;
     private int[][] numBlock;
 
     private int[][] timeBlockTemp;
@@ -25,6 +25,8 @@ public class Play {
     private int score;
 
     private int tempNumBlock; // เก็บตัวเลขของ block ที่เปิดล่าสุด
+    private int tempNumBlockI;
+    private int tempNumBlockJ;
 
     public Play(Graphics2D graphics2D, int row,int col) {
         this.graphics2D = graphics2D;
@@ -44,7 +46,7 @@ public class Play {
         radiusHight = hight/row;
         radiusWidth = width/col;
 
-        checkClick = new boolean[row][col]; // เก็บสถานะของ block ; true = แสดง
+        checkClick = new int[row][col]; // เก็บสถานะของ block ; 1 = แสดง, 0 = ไม่แสดง, -1 = ซ่อน
         numBlock = new int[row][col]; // เก็บหมายเลขของแต่ละ block ที่สุ่มได้
 
         timeBlockTemp = new int[row][col]; // เก็บเวลาเริ่มต้นที่กดโดย block
@@ -52,6 +54,8 @@ public class Play {
 
         score = 0; // คะแนนเริ่มต้น
         tempNumBlock = -1;
+        tempNumBlockI = -1;
+        tempNumBlockJ = -1;
 
         ranNumBlock();
     }
@@ -66,18 +70,20 @@ public class Play {
 
         for (int i=0; i<row; i++) {
             for (int j=0; j<col; j++) {
-                if (checkClick[i][j]) {
-                    graphics2D.setColor(Color.MAGENTA);
-                    if (GamePanel.timeSec >= timeBlockTemp[i][j]+timeBlockDelay) {
+                if(checkClick[i][j] != -1) {
+                    if (checkClick[i][j] == 1) {
+                        graphics2D.setColor(Color.MAGENTA);
+                        if (GamePanel.timeSec >= timeBlockTemp[i][j] + timeBlockDelay) {
+                            graphics2D.setColor(Color.ORANGE);
+                            checkClick[i][j] = 0;
+                        }
+                    } else
                         graphics2D.setColor(Color.ORANGE);
-                        checkClick[i][j] = false;
-                    }
-                } else
+                    graphics2D.fillRect(x, y, radiusWidth, radiusHight);
                     graphics2D.setColor(Color.ORANGE);
-                graphics2D.fillRect(x, y, radiusWidth, radiusHight);
-                graphics2D.setColor(Color.ORANGE);
-                graphics2D.setFont(new Font("Courier New", Font.BOLD, radiusHight/3));
-                graphics2D.drawString(numBlock[i][j]+" ",x+(radiusWidth/2),y+(radiusHight/2));
+                    graphics2D.setFont(new Font("Courier New", Font.BOLD, radiusHight / 3));
+                    graphics2D.drawString(numBlock[i][j] + " ", x + (radiusWidth / 2), y + (radiusHight / 2));
+                }
                 x += radiusWidth+margin;
             }
             y += radiusHight+margin;
@@ -97,14 +103,19 @@ public class Play {
         for (int i=0; i<row; i++) {
             for (int j=0; j<col; j++) {
                 //              ตรวจสอบระยะคลิกในแกน x                     ตรวจสอบระยะคลิกแกน y                ต้องไม่เคยคลิกมาก่อน
-                if ((x <= xClick && x+radiusWidth >= xClick) && (y <= yClick && y+radiusHight >= yClick) && !checkClick[i][j]) {
-                    checkClick[i][j] = true;
+                if ((x <= xClick && x+radiusWidth >= xClick) && (y <= yClick && y+radiusHight >= yClick) && checkClick[i][j] == 0) {
+                    checkClick[i][j] = 1;
                     timeBlockTemp[i][j] = GamePanel.timeSec;
 
                     if (tempNumBlock == numBlock[i][j]) {
                         score++;
+                        tempNumBlock = -1;
+                        checkClick[i][j] = -1;
+                        checkClick[tempNumBlockI][tempNumBlockJ] = -1;
                     } else {
                         tempNumBlock = numBlock[i][j];
+                        tempNumBlockI = i;
+                        tempNumBlockJ = j;
                     }
 
                     System.out.println("["+(i+1)+"]["+(j+1)+"] = "+checkClick[i][j]);
