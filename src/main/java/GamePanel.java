@@ -9,6 +9,11 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     public static int WIDTH = 500;
     public static int HEIGHT = 500;
 
+    public static int page = 1;
+    public static boolean nextPage = true;
+    public static int numRow = 2;
+    public static int numCol = 2;
+
     private boolean playing;
     private int FPS = 30;
 
@@ -25,6 +30,9 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     ////////
 
     Play play;
+    Mode mode;
+    Category category;
+    GroupNum groupNum;
 
     public GamePanel() {
         super();
@@ -44,12 +52,10 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
     public void run() {
 
-        playing = true;
-
         bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_BGR);
         graphics2D = (Graphics2D) bufferedImage.getGraphics();
 
-        play = new Play(graphics2D, 4, 4); //กำหนดขนาดของตาราง row & col
+        playing = true;
 
         long startTime;
         long URDTimeMillis;
@@ -58,6 +64,28 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
 
         while (playing) {
             startTime = System.nanoTime();
+
+            if (page == 1) {
+                if (nextPage) {
+                    mode = new Mode(graphics2D);
+                    nextPage = false;
+                }
+            } else if (page == 2){
+                if (nextPage) {
+                    category = new Category(graphics2D);
+                    nextPage = false;
+                }
+            } else if (page == 3) {
+                if (nextPage) {
+                    groupNum = new GroupNum(graphics2D);
+                    nextPage = false;
+                }
+            } else if (page == 4) {
+                if (nextPage) {
+                    play = new Play(graphics2D, numRow, numCol); //กำหนดขนาดของตาราง row & col
+                    nextPage = false;
+                }
+            }
 
             gameUpdate();
             gameRender();
@@ -89,10 +117,19 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
         graphics2D.fillRect(0,0, WIDTH, HEIGHT);
 
         graphics2D.setColor(Color.GREEN);
-        graphics2D.drawString("Time : "+timeSec,20,20);
         graphics2D.drawString("X: "+x+", Y: "+y,20,480);
 
-        play.draw();
+        if (page == 1) {
+            mode.draw();
+        } else if (page == 2) {
+            category.draw();
+        } else if (page == 3) {
+            groupNum.draw();
+        } else if (page == 4) {
+            graphics2D.setColor(Color.GREEN);
+            graphics2D.drawString("Time : "+timeSec,20,20);
+            play.draw();
+        }
     }
 
     public void gameDraw() {
@@ -109,7 +146,15 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     public void mousePressed(MouseEvent e) {
         x = e.getX();
         y = e.getY();
-        play.pickClick(e.getX(), e.getY());
+        if (page == 1) {
+            mode.click(e.getX(), e.getY());
+        } else if (page == 2) {
+            category.click(e.getX(), e.getY());
+        } else if (page == 3) {
+            groupNum.click(e.getX(), e.getY());
+        } else if (page == 4) {
+            play.pickClick(e.getX(), e.getY());
+        }
     }
 
     public void mouseReleased(MouseEvent e) {
