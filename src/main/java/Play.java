@@ -1,3 +1,4 @@
+
 import java.awt.*;
 
 public class Play {
@@ -28,7 +29,15 @@ public class Play {
     private int tempNumBlockI;
     private int tempNumBlockJ;
 
-    public Play(Graphics2D graphics2D, int row,int col) {
+    private int[] dx1 = {0, 100, 200, 300, 0, 100, 200, 300, 0, 100, 200, 300};
+    private int[] dx2 = {0, 0, 0, 0, 100, 100, 100, 100, 200, 200, 200, 200};
+    private int[] dx3 = {100, 200, 300, 400, 100, 200, 300, 400, 100, 200, 300, 400};
+    private int[] dx4 = {100, 100, 100, 100, 200, 200, 200, 200, 300, 300, 300, 300};
+
+
+    Image imageCar;
+
+    public Play(Graphics2D graphics2D, int row, int col) {
         this.graphics2D = graphics2D;
         this.row = row;
         this.col = col;
@@ -43,8 +52,8 @@ public class Play {
         width = 350;
 
         //ความกว้าง-ยาว ของแต่ละ block
-        radiusHight = hight/row;
-        radiusWidth = width/col;
+        radiusHight = hight / row;
+        radiusWidth = width / col;
 
         checkClick = new int[row][col]; // เก็บสถานะของ block ; 1 = แสดง, 0 = ไม่แสดง, -1 = ซ่อน
         numBlock = new int[row][col]; // เก็บหมายเลขของแต่ละ block ที่สุ่มได้
@@ -58,6 +67,7 @@ public class Play {
         tempNumBlockJ = -1;
 
         ranNumBlock();
+
     }
 
     public void update() {
@@ -68,9 +78,9 @@ public class Play {
         int x = this.x;
         int y = this.y;
 
-        for (int i=0; i<row; i++) {
-            for (int j=0; j<col; j++) {
-                if(checkClick[i][j] != -1) {
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (checkClick[i][j] != -1) {
                     if (checkClick[i][j] == 1) {
                         graphics2D.setColor(Color.MAGENTA);
                         if (GamePanel.timeSec >= timeBlockTemp[i][j] + timeBlockDelay) {
@@ -79,20 +89,22 @@ public class Play {
                         }
                     } else
                         graphics2D.setColor(Color.ORANGE);
+                    imageCar = Toolkit.getDefaultToolkit().getImage("src/main/image/car"+numBlock[i][j]+".png");
                     graphics2D.fillRect(x, y, radiusWidth, radiusHight);
+                    graphics2D.drawImage(imageCar,x,y,radiusWidth,radiusHight,null);
                     graphics2D.setColor(Color.ORANGE);
                     graphics2D.setFont(new Font("Courier New", Font.BOLD, radiusHight / 3));
-                    graphics2D.drawString(numBlock[i][j] + " ", x + (radiusWidth / 2), y + (radiusHight / 2));
+                    //graphics2D.drawString(numBlock[i][j] + " ", x + (radiusWidth / 2), y + (radiusHight / 2));
                 }
-                x += radiusWidth+margin;
+                x += radiusWidth + margin;
             }
-            y += radiusHight+margin;
+            y += radiusHight + margin;
             x = this.x;
         }
 
         graphics2D.setFont(new Font("Courier New", Font.PLAIN, 15));
         graphics2D.setColor(Color.RED);
-        graphics2D.drawString("Score : "+score,390,20);
+        graphics2D.drawString("Score : " + score, 390, 20);
 
     }
 
@@ -100,10 +112,10 @@ public class Play {
     public void pickClick(int xClick, int yClick) {
         int x = this.x;
         int y = this.y;
-        for (int i=0; i<row; i++) {
-            for (int j=0; j<col; j++) {
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
                 //              ตรวจสอบระยะคลิกในแกน x                     ตรวจสอบระยะคลิกแกน y                ต้องไม่เคยคลิกมาก่อน
-                if ((x <= xClick && x+radiusWidth >= xClick) && (y <= yClick && y+radiusHight >= yClick) && checkClick[i][j] == 0) {
+                if ((x <= xClick && x + radiusWidth >= xClick) && (y <= yClick && y + radiusHight >= yClick) && checkClick[i][j] == 0) {
                     checkClick[i][j] = 1;
                     timeBlockTemp[i][j] = GamePanel.timeSec;
 
@@ -118,12 +130,12 @@ public class Play {
                         tempNumBlockJ = j;
                     }
 
-                    System.out.println("["+(i+1)+"]["+(j+1)+"] = "+checkClick[i][j]);
+                    System.out.println("[" + (i + 1) + "][" + (j + 1) + "] = " + checkClick[i][j]);
                     return;
                 }
-                x += radiusWidth+margin;
+                x += radiusWidth + margin;
             }
-            y += radiusHight+margin;
+            y += radiusHight + margin;
             x = this.x;
         }
     }
@@ -135,26 +147,26 @@ public class Play {
         int randNum;
         boolean check;
         int loop;
-        if ((row*col) % 2 == 0)
-            loop = row*col;
+        if ((row * col) % 2 == 0)
+            loop = row * col;
         else
-            loop = (row*col)-1;
-        for (int i=0; i<loop; i++) {
+            loop = (row * col) - 1;
+        for (int i = 0; i < loop; i++) {
             check = true;
             // random row and col
             do {
-                randRow = (int)(Math.random()*row);
-                randCol = (int)(Math.random()*col);
-                System.out.println("Random["+randRow+"]["+randCol+"]: "+numBlock[randRow][randCol]);
+                randRow = (int) (Math.random() * row);
+                randCol = (int) (Math.random() * col);
+                System.out.println("Random[" + randRow + "][" + randCol + "]: " + numBlock[randRow][randCol]);
                 if (numBlock[randRow][randCol] == 0) check = false;
-            } while(check);
+            } while (check);
             // random number block
             do {
-                randNum = 1+(int)(Math.random()*((row*col)/2));
-                System.out.println("randNum : "+randNum);
+                randNum = 1 + (int) (Math.random() * ((row * col) / 2));
+                System.out.println("randNum : " + randNum);
                 int count = 0;
-                for (int j=0; j<row; j++) {
-                    for (int k=0; k<col; k++) {
+                for (int j = 0; j < row; j++) {
+                    for (int k = 0; k < col; k++) {
                         if (numBlock[j][k] == randNum) count++;
                     }
                 }

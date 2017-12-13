@@ -130,6 +130,9 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
             graphics2D.drawString("Time : "+timeSec,20,20);
             play.draw();
         }
+//        Image image = Toolkit.getDefaultToolkit().getImage("src/main/image/car.png");
+//        graphics2D.drawImage(image,10,10,this);
+
     }
 
     public void gameDraw() {
