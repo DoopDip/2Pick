@@ -29,11 +29,7 @@ public class Play {
     private int tempNumBlockI;
     private int tempNumBlockJ;
 
-    private int[] dx1 = {0, 100, 200, 300, 0, 100, 200, 300, 0, 100, 200, 300};
-    private int[] dx2 = {0, 0, 0, 0, 100, 100, 100, 100, 200, 200, 200, 200};
-    private int[] dx3 = {100, 200, 300, 400, 100, 200, 300, 400, 100, 200, 300, 400};
-    private int[] dx4 = {100, 100, 100, 100, 200, 200, 200, 200, 300, 300, 300, 300};
-
+    private String categoryName;
 
     Image imageCar;
 
@@ -41,6 +37,8 @@ public class Play {
         this.graphics2D = graphics2D;
         this.row = row;
         this.col = col;
+
+        GamePanel.timeSec = 0;
 
         margin = 1; // ขอบระยะห่างของแต่ละ block
         //พิกัดเริ่มต้นที่วาด block
@@ -68,30 +66,39 @@ public class Play {
 
         ranNumBlock();
 
-    }
-
-    public void update() {
+        if (GamePanel.categoryNum == 1)
+            categoryName = "fruit";
+        else if (GamePanel.categoryNum == 2)
+            categoryName = "animal";
+        else
+            categoryName = "car";
 
     }
 
     public void draw() {
         int x = this.x;
         int y = this.y;
-
+        graphics2D.setColor(Color.ORANGE);
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < col; j++) {
                 if (checkClick[i][j] != -1) {
                     if (checkClick[i][j] == 1) {
+                        imageCar = Toolkit.getDefaultToolkit().getImage("src/main/image/"+categoryName+"/"+numBlock[i][j]+".png");
+                        graphics2D.fillRect(x, y, radiusWidth, radiusHight);
+                        graphics2D.drawImage(imageCar,x,y,radiusWidth,radiusHight,null);
                         graphics2D.setColor(Color.MAGENTA);
                         if (GamePanel.timeSec >= timeBlockTemp[i][j] + timeBlockDelay) {
                             graphics2D.setColor(Color.ORANGE);
+                            graphics2D.fillRect(x, y, radiusWidth, radiusHight);
                             checkClick[i][j] = 0;
                         }
-                    } else
+                    } else {
                         graphics2D.setColor(Color.ORANGE);
-                    imageCar = Toolkit.getDefaultToolkit().getImage("src/main/image/car"+numBlock[i][j]+".png");
-                    graphics2D.fillRect(x, y, radiusWidth, radiusHight);
-                    graphics2D.drawImage(imageCar,x,y,radiusWidth,radiusHight,null);
+                        graphics2D.fillRect(x, y, radiusWidth, radiusHight);
+                    }
+
+
+
                     graphics2D.setColor(Color.ORANGE);
                     graphics2D.setFont(new Font("Courier New", Font.BOLD, radiusHight / 3));
                     //graphics2D.drawString(numBlock[i][j] + " ", x + (radiusWidth / 2), y + (radiusHight / 2));

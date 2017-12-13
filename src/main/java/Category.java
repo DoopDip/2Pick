@@ -27,14 +27,17 @@ public class Category {
     public void click(int x, int y) {
         if (x > 50 && x < 150 && y > 220 && y < 320) {
             System.out.println("Click Fruit");
+            GamePanel.categoryNum = 1;
             GamePanel.page = 3;
             GamePanel.nextPage = true;
         } else if (x > 200 && x < 300 && y > 220 && y < 320) {
             System.out.println("Click Animal");
+            GamePanel.categoryNum = 2;
             GamePanel.page = 3;
             GamePanel.nextPage = true;
         } else if (x > 350 && x < 450 && y > 220 && y < 320) {
             System.out.println("Click Car");
+            GamePanel.categoryNum = 3;
             GamePanel.page = 3;
             GamePanel.nextPage = true;
         }

@@ -14,6 +14,8 @@ public class GamePanel extends JPanel implements Runnable, MouseListener {
     public static int numRow = 2;
     public static int numCol = 2;
 
+    public static int categoryNum;
+
     private boolean playing;
     private int FPS = 30;
 
