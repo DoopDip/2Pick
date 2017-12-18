@@ -83,9 +83,9 @@ public class Play {
             for (int j = 0; j < col; j++) {
                 if (checkClick[i][j] != -1) {
                     if (checkClick[i][j] == 1) {
-                        imageCar = Toolkit.getDefaultToolkit().getImage("src/main/image/"+categoryName+"/"+numBlock[i][j]+".png");
+                        imageCar = Toolkit.getDefaultToolkit().getImage("src/main/image/" + categoryName + "/" + numBlock[i][j] + ".png");
                         graphics2D.fillRect(x, y, radiusWidth, radiusHight);
-                        graphics2D.drawImage(imageCar,x,y,radiusWidth,radiusHight,null);
+                        graphics2D.drawImage(imageCar, x, y, radiusWidth, radiusHight, null);
                         graphics2D.setColor(Color.MAGENTA);
                         if (GamePanel.timeSec >= timeBlockTemp[i][j] + timeBlockDelay) {
                             graphics2D.setColor(Color.ORANGE);
@@ -96,7 +96,6 @@ public class Play {
                         graphics2D.setColor(Color.ORANGE);
                         graphics2D.fillRect(x, y, radiusWidth, radiusHight);
                     }
-
 
 
                     graphics2D.setColor(Color.ORANGE);
